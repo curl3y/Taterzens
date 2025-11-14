@@ -104,8 +104,8 @@ public class BungeeCommand extends AbstractTaterzenCommand {
         // Sending command as CustomPayloadS2CPacket
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(this.proxyMessage.getSubchannel());
-        out.writeUTF(this.playername.replace(CLICKER_PLACEHOLDER, player.getGameProfile().getName()));
-        out.writeUTF(this.argument.replaceAll(CLICKER_PLACEHOLDER, player.getGameProfile().getName()));
+        out.writeUTF(this.playername.replace(CLICKER_PLACEHOLDER, player.getGameProfile().name()));
+        out.writeUTF(this.argument.replaceAll(CLICKER_PLACEHOLDER, player.getGameProfile().name()));
 
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeResourceLocation(BUNGEE_CHANNEL);

@@ -385,7 +385,7 @@ public class NpcCommand {
     private static Collection<String> getOnlinePlayers(CommandContext<CommandSourceStack> context) {
         Collection<String> names = new ArrayList<>();
         context.getSource().getServer().getPlayerList().getPlayers().forEach(
-                player -> names.add(player.getGameProfile().getName())
+                player -> names.add(player.getGameProfile().name())
         );
 
         return names;
@@ -405,7 +405,7 @@ public class NpcCommand {
             taterzenName = MessageArgument.getMessage(context, "name").getString();
         } catch (IllegalArgumentException ignored) {
             // no name was provided, defaulting to player's own name
-            taterzenName = player.getGameProfile().getName();
+            taterzenName = player.getGameProfile().name();
         }
 
         TaterzenNPC taterzen = TaterzensAPI.createTaterzen(player, taterzenName);

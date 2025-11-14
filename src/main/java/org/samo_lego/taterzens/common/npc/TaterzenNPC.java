@@ -785,7 +785,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
     public void setSkinFromTag(CompoundTag tag) {
         // Clearing current skin
         try {
-            PropertyMap map = this.gameProfile.getProperties();
+            PropertyMap map = this.gameProfile.properties();
             Property skin = map.get("textures").iterator().next();
             map.remove("textures", skin);
         } catch (NoSuchElementException ignored) {
@@ -796,7 +796,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
             String signature = tag.getStringOr("signature", "");
 
             if (!value.isEmpty() && !signature.isEmpty()) {
-                PropertyMap propertyMap = this.gameProfile.getProperties();
+                PropertyMap propertyMap = this.gameProfile.properties();
                 propertyMap.put("textures", new Property("textures", value, signature));
             }
 
@@ -812,7 +812,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
     public void setSkinFromTag(ValueInput tag) {
         // Clearing current skin
         try {
-            PropertyMap map = this.gameProfile.getProperties();
+            PropertyMap map = this.gameProfile.properties();
             Property skin = map.get("textures").iterator().next();
             map.remove("textures", skin);
         } catch (NoSuchElementException ignored) {
@@ -823,7 +823,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
             String signature = tag.getStringOr("signature", "");
 
             if (!value.isEmpty() && !signature.isEmpty()) {
-                PropertyMap propertyMap = this.gameProfile.getProperties();
+                PropertyMap propertyMap = this.gameProfile.properties();
                 propertyMap.put("textures", new Property("textures", value, signature));
             }
 
@@ -840,7 +840,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
     public CompoundTag writeSkinToTag(GameProfile profile) {
         CompoundTag skinTag = new CompoundTag();
         try {
-            PropertyMap propertyMap = profile.getProperties();
+            PropertyMap propertyMap = profile.properties();
             Property skin = propertyMap.get("textures").iterator().next();
 
             skinTag.putString("value", skin.value());
@@ -859,7 +859,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
      */
     public void writeSkinToTag(GameProfile profile, ValueOutput skinTag) {
         try {
-            PropertyMap propertyMap = profile.getProperties();
+            PropertyMap propertyMap = profile.properties();
             Property skin = propertyMap.get("textures").iterator().next();
 
             skinTag.putString("value", skin.value());
@@ -1301,7 +1301,7 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
     }
 */
     @Override
-    protected boolean shouldDropLoot() {
+    protected boolean shouldDropLoot(ServerLevel level) {
         return this.isEquipmentDropsAllowed();
     }
 
@@ -2002,17 +2002,12 @@ public class TaterzenNPC extends PathfinderMob implements CrossbowAttackMob, Ran
         return this.lockedUuid == null || this.lockedUuid.equals(uuid) || this.getUUID().equals(uuid);
     }
 
-    /**
-     * Tries to make taterzen to ride provided entity.
-     *
-     * @param entity entity to ride.
-     * @return true if taterzen was able to ride provided entity, otherwise false.
-     */
-    public boolean startRiding(Entity entity) {
-        if (this.getTag("AllowRiding", config.defaults.allowRiding)) {
-            return this.startRiding(entity, false);
+    @Override
+    public boolean startRiding(Entity entity, boolean force, boolean update) {
+        if (!force && !this.getTag("AllowRiding", config.defaults.allowRiding)) {
+            return false;
         }
-        return false;
+        return super.startRiding(entity, force, update);
     }
 
     /**

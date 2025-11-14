@@ -45,7 +45,7 @@ public class MountCommand {
                 taterzen.stopRiding();
                 feedbackText = TextUtil.successText("taterzens.command.umount", taterzen.getName().getString());
             } else {
-                taterzen.startRiding(finalToMount, true);
+                taterzen.startRiding(finalToMount, true, false);
                 feedbackText = successText("taterzens.command.mount", taterzen.getName().getString(), finalToMount.getName().getString());
             }
             taterzen.broadcastProfileUpdates();
